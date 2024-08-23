@@ -1,0 +1,371 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| assignment         |
+| information_schema |
+| myemp              |
+| mysql              |
+| performance_schema |
+| pratice            |
+| rupali             |
+| student            |
+| sys                |
++--------------------+
+9 rows in set (0.01 sec)
+
+mysql> use assignment;
+Database changed
+mysql> create table Customer (cid int primary key,Name varchar(20) unique key,city varchar(10),birthdate date);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc Customer;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| cid       | int         | NO   | PRI | NULL    |       |
+| Name      | varchar(20) | YES  | UNI | NULL    |       |
+| city      | varchar(10) | YES  |     | NULL    |       |
+| birthdate | date        | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table Order (oid int primary key,order_name varchar(10),price int,cid int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Order (oid int primary key,order_name varchar(10),price int,cid int)' at line 1
+mysql> create table Order (oid int primary key,Oname varchar(10),price int,cid int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Order (oid int primary key,Oname varchar(10),price int,cid int)' at line 1
+mysql> create table Orders (oid int primary key,Oname varchar(10),price int,cid int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc Orders;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| oid   | int         | NO   | PRI | NULL    |       |
+| Oname | varchar(10) | YES  |     | NULL    |       |
+| price | int         | YES  |     | NULL    |       |
+| cid   | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table Orders add constraint forign key(cid) references Customer(cid);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key(cid) references Customer(cid)' at line 1
+mysql> alter table Orders add constraint foreign key(cid) references Customer(cid);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Orders;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| oid   | int         | NO   | PRI | NULL    |       |
+| Oname | varchar(10) | YES  |     | NULL    |       |
+| price | int         | YES  |     | NULL    |       |
+| cid   | int         | YES  | MUL | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Orders(oid,Oname,price,cid)values(101,'Table',5500,1);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`assignment`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `customer` (`cid`))
+mysql> desc customer;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| cid       | int         | NO   | PRI | NULL    |       |
+| Name      | varchar(20) | YES  | UNI | NULL    |       |
+| city      | varchar(10) | YES  |     | NULL    |       |
+| birthdate | date        | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+
+mysql> insert into customer(cid,Name,city,birthdate)values(100,'nikita',osmanabad,1996-05-02);
+ERROR 1054 (42S22): Unknown column 'osmanabad' in 'field list'
+mysql> insert into customer(cid,Name,city,birthdate)values(100,'nikita','osmanabad',1996-05-02);
+ERROR 1292 (22007): Incorrect date value: '1989' for column 'birthdate' at row 1
+mysql> insert into customer(cid,Name,city,birthdate)values(100,'nikita','osmanabad','1996-05-02');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from customer;
++-----+--------+-----------+------------+
+| cid | Name   | city      | birthdate  |
++-----+--------+-----------+------------+
+| 100 | nikita | osmanabad | 1996-05-02 |
++-----+--------+-----------+------------+
+1 row in set (0.00 sec)
+
+mysql> insert into customer values(101,'john','mumbai','1995-05-12');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into customer values(102,'mona','mumbai','1995-05-11');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into customer values(103,'karan','pune','2000-05-11');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into customer values(104,'veer','nagpur','2010-02-01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into customer values(105,'vini','banglore','2011-12-01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into customer values(106,'vamika','banglore','2000-02-01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into customer values(107,'nitin','Goa','1990-10-01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from customer;
++-----+--------+-----------+------------+
+| cid | Name   | city      | birthdate  |
++-----+--------+-----------+------------+
+| 100 | nikita | osmanabad | 1996-05-02 |
+| 101 | john   | mumbai    | 1995-05-12 |
+| 102 | mona   | mumbai    | 1995-05-11 |
+| 103 | karan  | pune      | 2000-05-11 |
+| 104 | veer   | nagpur    | 2010-02-01 |
+| 105 | vini   | banglore  | 2011-12-01 |
+| 106 | vamika | banglore  | 2000-02-01 |
+| 107 | nitin  | Goa       | 1990-10-01 |
++-----+--------+-----------+------------+
+8 rows in set (0.00 sec)
+
+mysql> insert into customer values(108,'siya','delhi','1994-04-11');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into customer values(109,'riya','amravati','1995-05-10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from customer;
++-----+--------+-----------+------------+
+| cid | Name   | city      | birthdate  |
++-----+--------+-----------+------------+
+| 100 | nikita | osmanabad | 1996-05-02 |
+| 101 | john   | mumbai    | 1995-05-12 |
+| 102 | mona   | mumbai    | 1995-05-11 |
+| 103 | karan  | pune      | 2000-05-11 |
+| 104 | veer   | nagpur    | 2010-02-01 |
+| 105 | vini   | banglore  | 2011-12-01 |
+| 106 | vamika | banglore  | 2000-02-01 |
+| 107 | nitin  | Goa       | 1990-10-01 |
+| 108 | siya   | delhi     | 1994-04-11 |
+| 109 | riya   | amravati  | 1995-05-10 |
++-----+--------+-----------+------------+
+10 rows in set (0.00 sec)
+
+mysql> insert into Orders(oid,Oname,price,cid)values(1,'Table',5500,100);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Orders values(2,'mobile',55500,101);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Orders values(3,'chair',5400,102);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Orders values(4,'food',2000,103);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Orders values(5,'laptop',50000,104);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Orders values(6,'books',2000,105);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Orders values(7,'furniture',50000,106);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Orders values(8,'colour',6000,107);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Orders values(9,'flowers',10000,108);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Orders values(10,'cloths',4500,109);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from Orders;
++-----+-----------+-------+------+
+| oid | Oname     | price | cid  |
++-----+-----------+-------+------+
+|   1 | Table     |  5500 |  100 |
+|   2 | mobile    | 55500 |  101 |
+|   3 | chair     |  5400 |  102 |
+|   4 | food      |  2000 |  103 |
+|   5 | laptop    | 50000 |  104 |
+|   6 | books     |  2000 |  105 |
+|   7 | furniture | 50000 |  106 |
+|   8 | colour    |  6000 |  107 |
+|   9 | flowers   | 10000 |  108 |
+|  10 | cloths    |  4500 |  109 |
++-----+-----------+-------+------+
+10 rows in set (0.00 sec)
+
+mysql> select * from customer;
++-----+--------+-----------+------------+
+| cid | Name   | city      | birthdate  |
++-----+--------+-----------+------------+
+| 100 | nikita | osmanabad | 1996-05-02 |
+| 101 | john   | mumbai    | 1995-05-12 |
+| 102 | mona   | mumbai    | 1995-05-11 |
+| 103 | karan  | pune      | 2000-05-11 |
+| 104 | veer   | nagpur    | 2010-02-01 |
+| 105 | vini   | banglore  | 2011-12-01 |
+| 106 | vamika | banglore  | 2000-02-01 |
+| 107 | nitin  | Goa       | 1990-10-01 |
+| 108 | siya   | delhi     | 1994-04-11 |
+| 109 | riya   | amravati  | 1995-05-10 |
++-----+--------+-----------+------------+
+10 rows in set (0.00 sec)
+
+
+mysql> select * from customer where city='Goa';
++-----+-------+------+------------+
+| cid | Name  | city | birthdate  |
++-----+-------+------+------------+
+| 107 | nitin | Goa  | 1990-10-01 |
++-----+-------+------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from Orders;
++-----+-----------+-------+------+
+| oid | Oname     | price | cid  |
++-----+-----------+-------+------+
+|   1 | Table     |  5500 |  100 |
+|   2 | mobile    | 55500 |  101 |
+|   3 | chair     |  5400 |  102 |
+|   4 | food      |  2000 |  103 |
+|   5 | laptop    | 50000 |  104 |
+|   6 | books     |  2000 |  105 |
+|   7 | furniture | 50000 |  106 |
+|   8 | colour    |  6000 |  107 |
+|   9 | flowers   | 10000 |  108 |
+|  10 | cloths    |  4500 |  109 |
++-----+-----------+-------+------+
+10 rows in set (0.00 sec)
+
+mysql> select * from Orders where price>40000;
++-----+-----------+-------+------+
+| oid | Oname     | price | cid  |
++-----+-----------+-------+------+
+|   2 | mobile    | 55500 |  101 |
+|   5 | laptop    | 50000 |  104 |
+|   7 | furniture | 50000 |  106 |
++-----+-----------+-------+------+
+3 rows in set (0.00 sec)
+
+mysql> delete from Customer where cid=107;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`assignment`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `customer` (`cid`))
+mysql> delete from orders where cid=107;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from Orders;
++-----+-----------+-------+------+
+| oid | Oname     | price | cid  |
++-----+-----------+-------+------+
+|   1 | Table     |  5500 |  100 |
+|   2 | mobile    | 55500 |  101 |
+|   3 | chair     |  5400 |  102 |
+|   4 | food      |  2000 |  103 |
+|   5 | laptop    | 50000 |  104 |
+|   6 | books     |  2000 |  105 |
+|   7 | furniture | 50000 |  106 |
+|   9 | flowers   | 10000 |  108 |
+|  10 | cloths    |  4500 |  109 |
++-----+-----------+-------+------+
+9 rows in set (0.00 sec)
+
+mysql> update table Customer city=kanpur where cid=106;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table Customer city=kanpur where cid=106' at line 1
+mysql>  update customer set city='Kanpur', where cid=106;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where cid=106' at line 1
+mysql>  update customer set city='Kanpur' where cid=106;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customer;
++-----+--------+-----------+------------+
+| cid | Name   | city      | birthdate  |
++-----+--------+-----------+------------+
+| 100 | nikita | osmanabad | 1996-05-02 |
+| 101 | john   | mumbai    | 1995-05-12 |
+| 102 | mona   | mumbai    | 1995-05-11 |
+| 103 | karan  | pune      | 2000-05-11 |
+| 104 | veer   | nagpur    | 2010-02-01 |
+| 105 | vini   | banglore  | 2011-12-01 |
+| 106 | vamika | Kanpur    | 2000-02-01 |
+| 107 | nitin  | Goa       | 1990-10-01 |
+| 108 | siya   | delhi     | 1994-04-11 |
+| 109 | riya   | amravati  | 1995-05-10 |
++-----+--------+-----------+------------+
+10 rows in set (0.00 sec)
+
+mysql> alter table customer add constraint null key(Name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'null key(Name)' at line 1
+mysql> alter table customer add constraint NULL(Name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NULL(Name)' at line 1
+mysql> alter table customer add constraint not NULL(Name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not NULL(Name)' at line 1
+mysql> alter table customer add constraint not NULL(Name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not NULL(Name)' at line 1
+mysql> alter table customer add constraint not NULL key(Name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not NULL key(Name)' at line 1
+mysql> desc customer;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| cid       | int         | NO   | PRI | NULL    |       |
+| Name      | varchar(20) | YES  | UNI | NULL    |       |
+| city      | varchar(10) | YES  |     | NULL    |       |
+| birthdate | date        | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table customer add not NULL key(Name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not NULL key(Name)' at line 1
+mysql>  update customer add constraint not null(Name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add constraint not null(Name)' at line 1
+mysql>  update customer add constraint not null key(Name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add constraint not null key(Name)' at line 1
+mysql>  update customer add  not null key(Name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add  not null key(Name)' at line 1
+
+mysql>  update customer set price=30000 where Oname='mobile';
+ERROR 1054 (42S22): Unknown column 'Oname' in 'where clause'
+mysql>  update Orders set price=30000 where Oname='mobile';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Orders;
++-----+-----------+-------+------+
+| oid | Oname     | price | cid  |
++-----+-----------+-------+------+
+|   1 | Table     |  5500 |  100 |
+|   2 | mobile    | 30000 |  101 |
+|   3 | chair     |  5400 |  102 |
+|   4 | food      |  2000 |  103 |
+|   5 | laptop    | 50000 |  104 |
+|   6 | books     |  2000 |  105 |
+|   7 | furniture | 50000 |  106 |
+|   9 | flowers   | 10000 |  108 |
+|  10 | cloths    |  4500 |  109 |
++-----+-----------+-------+------+
+9 rows in set (0.00 sec)
+
+mysql> select * from customer;
++-----+--------+-----------+------------+
+| cid | Name   | city      | birthdate  |
++-----+--------+-----------+------------+
+| 100 | nikita | osmanabad | 1996-05-02 |
+| 101 | john   | mumbai    | 1995-05-12 |
+| 102 | mona   | mumbai    | 1995-05-11 |
+| 103 | karan  | pune      | 2000-05-11 |
+| 104 | veer   | nagpur    | 2010-02-01 |
+| 105 | vini   | banglore  | 2011-12-01 |
+| 106 | vamika | Kanpur    | 2000-02-01 |
+| 107 | nitin  | Goa       | 1990-10-01 |
+| 108 | siya   | delhi     | 1994-04-11 |
+| 109 | riya   | amravati  | 1995-05-10 |
++-----+--------+-----------+------------+
+10 rows in set (0.00 sec)
+
+mysql>
