@@ -1,0 +1,29 @@
+Git and GitHub
+
+padwalshubham25@gmail.com
+25731624840
+
+git init
+git add
+git commit -m <message>
+git branch -M main
+git remote add origin <GitHub path>
+git push -u origin main
+
+git log - it use to check the changes made in file
+git clone - copy url from repository and paste into git bash to clone it
+
+----------------------------------------------------------
+Linux command:
+
+ls  -list file and folder from current directory.
+cd - change directory
+rm  - To remove file
+vi - editor
+vi <filename>
+press i for go into insert mode
+esc
+press  >   :wq! to save file and come outside file
+press  >   :q! do not save file and come outside file
+
+touch <filename>
